@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+    <style>
+        body {
+            background-image: url('fondo.jpg');
+            background-size: cover;
+            /* Esto hace que la imagen de fondo cubra todo el área del cuerpo */
+            background-repeat: no-repeat;
+            /* Esto evita que la imagen de fondo se repita */
+        }
+
+        .borroso {
+            filter: blur(5px);
+        }
+    </style>
+
+    <style>
+        .btn3d {
+            position: relative;
+            top: -6px;
+            border: 0;
+            transition: all 40ms linear;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            margin-left: 2px;
+            margin-right: 2px;
+        }
+
+        .btn3d:active:focus,
+        .btn3d:focus:hover,
+        .btn3d:focus {
+            -moz-outline-style: none;
+            outline: medium none;
+        }
+
+        .btn3d:active,
+        .btn3d.active {
+            top: 2px;
+        }
+
+        .btn3d.btn-white {
+            color: #666666;
+            box-shadow: 0 0 0 1px #ebebeb inset, 0 0 0 2px rgba(255, 255, 255, 0.10) inset, 0 8px 0 0 #f5f5f5, 0 8px 8px 1px rgba(0, 0, 0, .2);
+            background-color: #fff;
+        }
+
+        .btn3d.btn-white:active,
+        .btn3d.btn-white.active {
+            color: #666666;
+            box-shadow: 0 0 0 1px #ebebeb inset, 0 0 0 1px rgba(255, 255, 255, 0.15) inset, 0 1px 3px 1px rgba(0, 0, 0, .1);
+            background-color: #fff;
+        }
+
+        .btn3d.btn-default {
+            color: #666666;
+            box-shadow: 0 0 0 1px #ebebeb inset, 0 0 0 2px rgba(255, 255, 255, 0.10) inset, 0 8px 0 0 #BEBEBE, 0 8px 8px 1px rgba(0, 0, 0, .2);
+            background-color: #f9f9f9;
+        }
+
+        .btn3d.btn-default:active,
+        .btn3d.btn-default.active {
+            color: #666666;
+            box-shadow: 0 0 0 1px #ebebeb inset, 0 0 0 1px rgba(255, 255, 255, 0.15) inset, 0 1px 3px 1px rgba(0, 0, 0, .1);
+            background-color: #f9f9f9;
+        }
+
+        .btn3d.btn-primary {
+            box-shadow: 0 0 0 1px #417fbd inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset, 0 8px 0 0 #4D5BBE, 0 8px 8px 1px rgba(0, 0, 0, 0.5);
+            background-color: #4274D7;
+        }
+
+        .btn3d.btn-primary:active,
+        .btn3d.btn-primary.active {
+            box-shadow: 0 0 0 1px #417fbd inset, 0 0 0 1px rgba(255, 255, 255, 0.15) inset, 0 1px 3px 1px rgba(0, 0, 0, 0.3);
+            background-color: #4274D7;
+        }
+
+        .btn3d.btn-success {
+            box-shadow: 0 0 0 1px #31c300 inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset, 0 8px 0 0 #5eb924, 0 8px 8px 1px rgba(0, 0, 0, 0.5);
+            background-color: #78d739;
+        }
+
+        .btn3d.btn-success:active,
+        .btn3d.btn-success.active {
+            box-shadow: 0 0 0 1px #30cd00 inset, 0 0 0 1px rgba(255, 255, 255, 0.15) inset, 0 1px 3px 1px rgba(0, 0, 0, 0.3);
+            background-color: #78d739;
+        }
+
+        .btn3d.btn-info {
+            box-shadow: 0 0 0 1px #00a5c3 inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset, 0 8px 0 0 #348FD2, 0 8px 8px 1px rgba(0, 0, 0, 0.5);
+            background-color: #39B3D7;
+        }
+
+        .btn3d.btn-info:active,
+        .btn3d.btn-info.active {
+            box-shadow: 0 0 0 1px #00a5c3 inset, 0 0 0 1px rgba(255, 255, 255, 0.15) inset, 0 1px 3px 1px rgba(0, 0, 0, 0.3);
+            background-color: #39B3D7;
+        }
+
+        .btn3d.btn-warning {
+            box-shadow: 0 0 0 1px #d79a47 inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset, 0 8px 0 0 #D79A34, 0 8px 8px 1px rgba(0, 0, 0, 0.5);
+            background-color: #FEAF20;
+        }
+
+        .btn3d.btn-warning:active,
+        .btn3d.btn-warning.active {
+            box-shadow: 0 0 0 1px #d79a47 inset, 0 0 0 1px rgba(255, 255, 255, 0.15) inset, 0 1px 3px 1px rgba(0, 0, 0, 0.3);
+            background-color: #FEAF20;
+        }
+
+        .btn3d.btn-danger {
+            box-shadow: 0 0 0 1px #b93802 inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset, 0 8px 0 0 #AA0000, 0 8px 8px 1px rgba(0, 0, 0, 0.5);
+            background-color: #D73814;
+        }
+
+        .btn3d.btn-danger:active,
+        .btn3d.btn-danger.active {
+            box-shadow: 0 0 0 1px #b93802 inset, 0 0 0 1px rgba(255, 255, 255, 0.15) inset, 0 1px 3px 1px rgba(0, 0, 0, 0.3);
+            background-color: #D73814;
+        }
+
+        .btn3d.btn-magick {
+            color: #fff;
+            box-shadow: 0 0 0 1px #9a00cd inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset, 0 8px 0 0 #9823d5, 0 8px 8px 1px rgba(0, 0, 0, 0.5);
+            background-color: #bb39d7;
+        }
+
+        .btn3d.btn-magick:active,
+        .btn3d.btn-magick.active {
+            box-shadow: 0 0 0 1px #9a00cd inset, 0 0 0 1px rgba(255, 255, 255, 0.15) inset, 0 1px 3px 1px rgba(0, 0, 0, 0.3);
+            background-color: #bb39d7;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="row gx-5">
+            <div class="col m-3 card shadow p-3 mb-5 bg-body rounded">
+                <div class="card-body" id="card_suma">
+                    <h5 class="card-title border-bottom">Suma</h5>
+                    <div class="row mt-4">
+                        <div class="col">
+                            <div class="mb-3">
+                                <label for="suma_numero_1" class="form-label">Numero 1</label>
+                                <input type="number" class="form-control" id="suma_numero_1">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="mb-3">
+                                <label for="suma_numero_2" class="form-label">Numero 2</label>
+                                <input type="number" class="form-control" id="suma_numero_2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="suma_resultado" class="form-label">Resultado</label>
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control form-control-lg" id="suma_resultado">
+                            <button type="button" class="btn btn-danger btn-sm btn3d"
+                                id="btn_generar_suma"></span>Generar</button>
+
+                        </div>
+                    </div>
+                    <div class="d-grid gap-1">
+                        <button type="button" id="btn_validar_suma"
+                            class="btn btn-primary btn-lg btn3d btn-block">Validar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col m-3 card shadow p-3 mb-5 bg-body rounded">
+                <div class="card-body" id="card_resta">
+                    <h5 class="card-title border-bottom">Resta</h5>
+                    <div class="row mt-4">
+                        <div class="col">
+                            <div class="mb-3">
+                                <label for="resta_numero_1" class="form-label">Minuendo</label>
+                                <input type="number" class="form-control" id="resta_numero_1">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="mb-3">
+                                <label for="resta_numero_2" class="form-label">Sustraendo</label>
+                                <input type="number" class="form-control" id="resta_numero_2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="resta_resultado" class="form-label">Resultado</label>
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control" id="resta_resultado">
+                            <button type="button" class="btn btn-danger btn-sm btn3d"
+                                id="btn_generar_resta">Generar</button>
+                        </div>
+                    </div>
+                    <div class="d-grid gap-1">
+                        <button type="button" id="btn_validar_resta" class="btn btn-success btn-lg btn3d btn-block">
+                            Validar</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col m-3 card shadow p-3 mb-5 bg-body rounded">
+                <div class="card-body" id="card_multiplicacion">
+                    <h5 class="card-title border-bottom">Multiplicacion</h5>
+                    <div class="row mt-4">
+                        <div class="col">
+                            <div class="mb-3">
+                                <label for="multiplicacion_numero_1" class="form-label">Multiplicando</label>
+                                <input type="number" class="form-control" id="multiplicacion_numero_1">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="mb-3">
+                                <label for="multiplicacion_numero_2" class="form-label">Multiplicador</label>
+                                <input type="number" class="form-control" id="multiplicacion_numero_2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="multiplicacion_resultado" class="form-label">Producto</label>
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control" id="multiplicacion_resultado">
+                            <button type="button" class="btn btn-danger btn-sm btn3d"
+                                id="btn_generar_multiplicacion">Generar</button>
+                        </div>
+                    </div>
+                    <div class="d-grid gap-1">
+                        <button type="button" id="btn_validar_multiplicacion"
+                            class="btn btn-info btn-lg btn3d btn-block">Validar</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col m-3 card shadow p-3 mb-5 bg-body rounded">
+                <div class="card-body" id="card_division">
+                    <h5 class="card-title border-bottom">Division</h5>
+                    <div class="row mt-4">
+                        <div class="col">
+                            <div class="mb-3">
+                                <label for="division_numero_1" class="form-label">Dividendo</label>
+                                <input type="number" class="form-control" id="division_numero_1">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="mb-3">
+                                <label for="division_numero_2" class="form-label">Divisor</label>
+                                <input type="number" class="form-control" id="division_numero_2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="division_resultado" class="form-label">Cociente</label>
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control" id="division_resultado">
+                            <button type="button" class="btn btn-danger btn-sm btn3d"
+                                id="btn_generar_division">Generar</button>
+                        </div>
+                    </div>
+                    <div class="d-grid gap-1">
+                        <button type="button" id="btn_validar_division"
+                            class="btn btn-danger btn-lg btn3d btn-block">Validar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        generaSuma();
+        generaResta();
+        generarMultiplicacion();
+        generarDivision();
+
+        aplicarDesenfoque('card_resta', 1000);
+        aplicarDesenfoque('card_multiplicacion', 1100);
+        aplicarDesenfoque('card_division', 1200);
+    });
+
+    function aplicarDesenfoque(el, tiempo) {
+        const elemento = document.getElementById(el);
+
+        setTimeout(function () {
+            elemento.classList.add('borroso');
+        }, tiempo);
+    }
+
+    function removerDesenfoque(el) {
+        const elemento = document.getElementById(el);
+        elemento.classList.remove('borroso');
+    }
+
+    function generaNumero() {
+        return Math.floor(Math.random() * 10) + 1;
+    }
+
+    function sendNotification(message) {
+        Toastify({
+            text: message,
+            className: "info",
+            style: {
+                background: "linear-gradient(to right, #00b09b, #96c93d)",
+            }
+        }).showToast();
+    }
+
+    function sendError(message) {
+        Toastify({
+            text: message,
+            className: "error",
+            style: {
+                background: "linear-gradient(to right, #ff6666, #ff99cc)",
+            }
+        }).showToast();
+    }
+
+    function ganaste(operacion) {
+        confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 },
+        });
+        Toastify({
+            text: 'Super ! Ganaste la ' + operacion,
+            className: "success",
+            style: {
+                background: "linear-gradient(to right, #00b09b, #96c93d)",
+            }
+        }).showToast();
+    }
+
+    const defaults = {
+        spread: 360,
+        ticks: 50,
+        gravity: 0,
+        decay: 0.94,
+        startVelocity: 30,
+        shapes: ["star"],
+        colors: ["FFE400", "FFBD00", "E89400", "FFCA6C", "FDFFB8"],
+    };
+
+    function shoot() {
+        confetti({
+            ...defaults,
+            particleCount: 40,
+            scalar: 1.2,
+            shapes: ["star"],
+        });
+
+        confetti({
+            ...defaults,
+            particleCount: 10,
+            scalar: 0.75,
+            shapes: ["circle"],
+        });
+    }
+
+    function ganarTodo() {
+        setTimeout(shoot, 0);
+        setTimeout(shoot, 100);
+        setTimeout(shoot, 200);
+        setTimeout(shoot, 300);
+        setTimeout(shoot, 310);
+
+        setTimeout(function () {
+            location.reload();
+        }, 6000);
+    }
+
+    // INICIO - SUMA
+    function generaSuma() {
+        const suma_resultado_value = generaNumero();
+        const suma_resultado_input = document.getElementById('suma_resultado');
+        suma_resultado_input.value = suma_resultado_value;
+        suma_resultado_input.readOnly = true;
+    }
+
+    document.getElementById('btn_generar_suma').addEventListener('click', function () {
+        const numero_generado = generaNumero();
+        document.getElementById('suma_resultado').value = numero_generado;
+        sendNotification('Nuevo valor para la suma generado...')
+    })
+
+    document.getElementById('btn_validar_suma').addEventListener('click', function () {
+        const suma_numero_1 = document.getElementById('suma_numero_1').value;
+        const suma_numero_2 = document.getElementById('suma_numero_2').value;
+        const suma_resultado_esperado = Number(document.getElementById('suma_resultado').value);
+        const resultado = Number(suma_numero_1) + Number(suma_numero_2);
+        if (suma_resultado_esperado == resultado) {
+            ganaste('suma');
+            removerDesenfoque('card_resta')
+        } else {
+            sendError('Perdiste, sigue intentando la suma!')
+        }
+    })
+    // FIN - SUMA
+
+    // INICIO - RESTA
+    function generaResta() {
+        const resta_resultado_value = generaNumero();
+        const resta_resultado_input = document.getElementById('resta_resultado');
+        resta_resultado_input.value = resta_resultado_value;
+        resta_resultado_input.readOnly = true;
+    }
+
+    document.getElementById('btn_generar_resta').addEventListener('click', function () {
+        const numero_generado = generaNumero();
+        document.getElementById('resta_resultado').value = numero_generado;
+        sendNotification('Nuevo valor para la resta generado...')
+    })
+
+
+    document.getElementById('btn_validar_resta').addEventListener('click', function () {
+        const resta_numero_1 = document.getElementById('resta_numero_1').value;
+        const resta_numero_2 = document.getElementById('resta_numero_2').value;
+        const resta_resultado_esperado = Number(document.getElementById('resta_resultado').value);
+
+        const resultado = Number(resta_numero_1) - Number(resta_numero_2);
+        if (resta_resultado_esperado == resultado) {
+            ganaste('resta');
+            removerDesenfoque('card_multiplicacion')
+        } else {
+            sendError('Perdiste, sigue intentando la resta!')
+        }
+    })
+    // FIN - RESTA
+
+    // INICIO - MULTIPLICACION
+    function generarMultiplicacion() {
+        const multiplicacion_resultado_value = generaNumero();
+        const multiplicacion_resultado_input = document.getElementById('multiplicacion_resultado');
+        multiplicacion_resultado_input.value = multiplicacion_resultado_value;
+        multiplicacion_resultado_input.readOnly = true;
+    }
+
+    document.getElementById('btn_generar_multiplicacion').addEventListener('click', function () {
+        const numero_generado = generaNumero();
+        document.getElementById('multiplicacion_resultado').value = numero_generado;
+        sendNotification('Nuevo valor para la multiplicacion generado...')
+    })
+
+
+
+    document.getElementById('btn_validar_multiplicacion').addEventListener('click', function () {
+        const multiplicacion_numero_1 = document.getElementById('multiplicacion_numero_1').value;
+        const multiplicacion_numero_2 = document.getElementById('multiplicacion_numero_2').value;
+        const multiplicacion_resultado_esperado = Number(document.getElementById('multiplicacion_resultado').value);
+
+        const resultado = Number(multiplicacion_numero_1) * Number(multiplicacion_numero_2);
+        if (multiplicacion_resultado_esperado == resultado) {
+            ganaste('multiplicacion');
+            removerDesenfoque('card_division')
+        } else {
+            sendError('Perdiste, sigue intentando la multiplicacion!')
+        }
+    })
+    // FIN - MULTIPLICACION
+
+    // INICIO - DIVISION
+    function generarDivision() {
+        const division_resultado_value = generaNumero();
+        const division_resultado_input = document.getElementById('division_resultado');
+        division_resultado_input.value = division_resultado_value;
+        division_resultado_input.readOnly = true;
+    }
+
+    document.getElementById('btn_generar_division').addEventListener('click', function () {
+        const numero_generado = generaNumero();
+        document.getElementById('division_resultado').value = numero_generado;
+        sendNotification('Nuevo valor para la division generado...')
+    })
+
+
+    document.getElementById('btn_validar_division').addEventListener('click', function () {
+        const division_numero_1 = document.getElementById('division_numero_1').value;
+        const division_numero_2 = document.getElementById('division_numero_2').value;
+        const division_resultado_esperado = Number(document.getElementById('division_resultado').value);
+
+        const resultado = Number(division_numero_1) / Number(division_numero_2);
+        if (division_resultado_esperado == resultado) {
+            ganaste('division');
+            ganarTodo();
+        } else {
+            sendError('Perdiste, sigue intentando la division!')
+        }
+    })
+
+    // FIN - DIVISION
+
+
+</script>
+
+</html>
